@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="unlekkerLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/unlekkerLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

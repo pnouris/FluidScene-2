@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="PixelFlow">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/PixelFlow/library/PixelFlow.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/PixelFlow/library/PixelFlow.jar!/" />
+    </SOURCES>
+  </library>
+</component>
