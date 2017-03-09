@@ -10,18 +10,14 @@ import processing.core.*;
 import processing.opengl.PGraphics2D;
 
 import processing.opengl.PGraphics3D;
-import toxi.geom.*;
-import toxi.geom.mesh.*;
-import toxi.processing.*;
 
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 
 public class FluidScene extends PApplet {
 
-    WETriangleMesh vase;
-    ToxiclibsSupport gfx;
-    PShape s;
+
+    VaseShape vase;
 
     private ControlP5 cp5;
     int viewport_w = 800;
@@ -33,7 +29,7 @@ public class FluidScene extends PApplet {
     int gui_y = 20;
 
     DwFluid2D fluid;
-    ObstaclePainter obstacle_painter;
+    //ObstaclePainter obstacle_painter;
 
     // render targets
     PGraphics2D pg_fluid;
@@ -59,6 +55,9 @@ public class FluidScene extends PApplet {
 
     @Override
     public void setup() {
+
+        vase = new VaseShape(loadShape("src\\main\\resources\\ceramicpot.obj"),this);
+
         // main library context
         DwPixelFlow context = new DwPixelFlow(this);
         context.print();
@@ -74,7 +73,8 @@ public class FluidScene extends PApplet {
         fluid.param.vorticity               = 0.10f;
 
         // interface for adding data to the fluid simulation
-        MyFluidData cb_fluid_data = new MyFluidData();
+        createGUI();
+        MyFluidData cb_fluid_data = new MyFluidData(this,cp5,vase);
         fluid.addCallback_FluiData(cb_fluid_data);
 
         // pgraphics for fluid
@@ -85,24 +85,14 @@ public class FluidScene extends PApplet {
         pg_fluid.endDraw();
 
         // Add vase
-        s = loadShape("src\\main\\resources\\ceramicpot.obj");
-        obstacle_painter = new ObstaclePainter(pg_obstacles);
 
-        createGUI();
-
-        frameRate(60);
+        //obstacle_painter = new ObstaclePainter(pg_obstacles);
     }
 
     @Override
     public void draw() {
         // add vase
-        pushMatrix();
-        translate(width/2, height/2, 0);
-        rotateX((float) (mouseY*0.01));
-        rotateY((float) (mouseX*0.01));
-        //gfx.mesh(vase, false, 10);
-        shape(s, 0, 0);
-        popMatrix();
+        vase.driveXPos();
 
         // update simulation
         if(UPDATE_FLUID){
@@ -140,8 +130,6 @@ public class FluidScene extends PApplet {
     }
 
     public void mousePressed(){
-        if(mouseButton == CENTER ) obstacle_painter.beginDraw(1); // add obstacles
-        if(mouseButton == RIGHT  ) obstacle_painter.beginDraw(2); // remove obstacles
     }
 
     public void fluid_resizeUp(){
@@ -266,142 +254,5 @@ public class FluidScene extends PApplet {
                 .addItem(group_display)
                 .open(4);
     }
-
-
-    public class MyFluidData implements DwFluid2D.FluidData {
-
-
-        // update() is called during the fluid-simulation update step.
-        //@Override
-        public void update(DwFluid2D fluid) {
-
-            float px, py, vx, vy, radius, vscale, r, g, b, intensity, temperature;
-
-            // add impulse: density + temperature
-            intensity = 1.0f;
-            px = width / 2;
-            py = height / 2;
-            radius = 20;
-            r = 1.0f;
-            g = 0.0f;
-            b = 0.0f;
-            fluid.addDensity(px, py, radius, r, g, b, intensity);
-            //fluid.addVelocity(px, -5, radius, 0, -5);
-
-            //if((fluid.simulation_step) % 200 == 0){
-            //  temperature = 50f;
-            //  fluid.addTemperature(px, py, radius, temperature);
-            //}
-            temperature = -5;
-            fluid.addTemperature(px, py, radius, temperature);
-            //fluid.addVelocity(px, py, radius, 0, -50);
-
-
-            boolean mouse_input = !cp5.isMouseOver() && mousePressed;
-
-            // add impulse: density + velocity
-            if (mouse_input && mouseButton == LEFT) {
-                radius = 15;
-                vscale = 15;
-                px = mouseX;
-                py = height - mouseY;
-                vx = (mouseX - pmouseX) * +vscale;
-                vy = (mouseY - pmouseY) * -vscale;
-
-                fluid.addDensity(px, py, radius, 0.25f, 0.0f, 0.1f, 1.0f);
-                fluid.addVelocity(px, py, radius, vx, vy);
-            }
-
-        }
-    }
-
-    public class ObstaclePainter {
-
-        // 0 ... not drawing
-        // 1 ... adding obstacles
-        // 2 ... removing obstacles
-        public int draw_mode = 0;
-        PGraphics pg;
-
-        float size_paint = 15;
-        float size_clear = size_paint * 2.5f;
-
-        float paint_x, paint_y;
-        float clear_x, clear_y;
-
-        int shading = 64;
-
-        public ObstaclePainter(PGraphics pg) {
-            this.pg = pg;
-        }
-
-        public void beginDraw(int mode) {
-            paint_x = mouseX;
-            paint_y = mouseY;
-            this.draw_mode = mode;
-            if (mode == 1) {
-                pg.beginDraw();
-                pg.blendMode(REPLACE);
-                pg.noStroke();
-                pg.fill(shading);
-                pg.ellipse(mouseX, mouseY, size_paint, size_paint);
-                pg.endDraw();
-            }
-            if (mode == 2) {
-                clear(mouseX, mouseY);
-            }
-        }
-
-        public boolean isDrawing() {
-            return draw_mode != 0;
-        }
-
-        public void draw() {
-            paint_x = mouseX;
-            paint_y = mouseY;
-            if (draw_mode == 1) {
-                pg.beginDraw();
-                pg.blendMode(REPLACE);
-                pg.strokeWeight(size_paint);
-                pg.stroke(shading);
-                pg.line(mouseX, mouseY, pmouseX, pmouseY);
-                pg.endDraw();
-            }
-            if (draw_mode == 2) {
-                clear(mouseX, mouseY);
-            }
-        }
-
-        public void endDraw() {
-            this.draw_mode = 0;
-        }
-
-        public void clear(float x, float y) {
-            clear_x = x;
-            clear_y = y;
-            pg.beginDraw();
-            pg.blendMode(REPLACE);
-            pg.noStroke();
-            pg.fill(0, 0);
-            pg.ellipse(x, y, size_clear, size_clear);
-            pg.endDraw();
-        }
-
-        public void displayBrush(PGraphics dst) {
-            if (draw_mode == 1) {
-                dst.strokeWeight(1);
-                dst.stroke(0);
-                dst.fill(200, 50);
-                dst.ellipse(paint_x, paint_y, size_paint, size_paint);
-            }
-            if (draw_mode == 2) {
-                dst.strokeWeight(1);
-                dst.stroke(200);
-                dst.fill(200, 100);
-                dst.ellipse(clear_x, clear_y, size_clear, size_clear);
-            }
-        }
-    }
-
 }
 
