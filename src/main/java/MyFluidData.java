@@ -31,14 +31,14 @@ public class MyFluidData implements DwFluid2D.FluidData {
         g = 0.0f;
         b = 0.0f;
         fluid.addDensity(px, py, radius, r, g, b, intensity);
-        //fluid.addVelocity(px, -5, radius, 0, -5);
+        fluid.addVelocity(px, -5, radius, 0, -5);
 
         //if((fluid.simulation_step) % 200 == 0){
         //  temperature = 50f;
         //  fluid.addTemperature(px, py, radius, temperature);
         //}
         temperature = -5;
-        fluid.addTemperature(px, py, radius, temperature);
+        //fluid.addTemperature(px, py, radius, temperature);
         //fluid.addVelocity(px, py, radius, 0, -50);
 
 

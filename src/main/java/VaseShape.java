@@ -17,12 +17,12 @@ public class VaseShape {
     public VaseShape(PShape vase, PApplet applet) {
         this.vase = vase;
         m = applet;
-        x = 0;
-        y = m.height /2;
+        x = 500;
+        y = 100;
         speed = 5;
         vase.rotateX(m.radians(180));
         vase.rotateY(m.radians(90));
-        vase.rotateZ(m.radians(90));
+        //vase.rotateZ(m.radians(10));
 
     }
 
