@@ -17,8 +17,8 @@ public class VaseShape {
     public VaseShape(PShape vase, PApplet applet) {
         this.vase = vase;
         m = applet;
-        x = 500;
-        y = 100;
+        x = m.width/2;
+        y = 600;
         speed = 5;
         vase.rotateX(m.radians(180));
         vase.rotateY(m.radians(90));
@@ -31,7 +31,10 @@ public class VaseShape {
     }
 
     public PVector getCurrentLocation(){
-        return new PVector(x,y,z);
+        float offsetX = 20;
+        float offsetY = 110;
+        float tempY = m.height -y;
+        return new PVector(x+offsetX,tempY+offsetY,z);
     }
 
     public void driveXPos() {

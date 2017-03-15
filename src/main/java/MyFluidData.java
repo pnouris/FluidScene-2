@@ -37,8 +37,8 @@ public class MyFluidData implements DwFluid2D.FluidData {
         //  temperature = 50f;
         //  fluid.addTemperature(px, py, radius, temperature);
         //}
-        temperature = -5;
-        //fluid.addTemperature(px, py, radius, temperature);
+        temperature = 5;
+        fluid.addTemperature(px, py, radius, temperature);
         //fluid.addVelocity(px, py, radius, 0, -50);
 
 
