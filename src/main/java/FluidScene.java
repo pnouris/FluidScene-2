@@ -56,7 +56,7 @@ public class FluidScene extends PApplet {
     @Override
     public void setup() {
 
-        vase = new VaseShape(loadShape("src\\main\\resources\\ceramicpot.obj"),this);
+        vase = new VaseShape(loadShape("src\\main\\resources\\asd.obj"),this);
 
         // main library context
         DwPixelFlow context = new DwPixelFlow(this);
