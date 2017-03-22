@@ -19,7 +19,7 @@ public class VaseShape {
         this.vase = vase;
         m = applet;
         x = m.width/2;
-        y = 600;
+        y = m.height/2;
         speed = 5;
 
         this.vase.rotateX(m.radians(180));
@@ -37,6 +37,7 @@ public class VaseShape {
         float offsetY = 110;
         float tempY = m.height -y;
         return new PVector(x+offsetX,tempY+offsetY,z);
+        //return new PVector(x+offsetX + m.cos(-m.frameCount) * x, tempY+offsetY + m.sin(-m.frameCount) * y, z);
     }
 
     public void driveXPos() {
@@ -47,25 +48,14 @@ public class VaseShape {
         m.popMatrix();
     }
 
-    public void moveMouse(){
+
+    public void animation(){
         m.pushMatrix();
-        m.translate(m.width/2, m.height/2, 0);
-        x = (float) (m.mouseY*0.01);
-        y = (float) (m.mouseX*0.01);
-        m.rotateX(x);
-        m.rotateY(y);
-        m.shape(vase, 0, 0);
+        m.translate(m.width/2, m.height/2, z);
+        m.rotateZ(m.radians(-m.frameCount));
+        m.translate(-250,-250);
+        m.shape(vase,m.width/2,m.height/2);
         m.popMatrix();
     }
-
-    public void displayCentered(){
-        m.pushMatrix();
-        m.translate(m.width/2, m.height/2, 0);
-        m.rotateX((float) 3.54);
-        m.rotateY((float) 4.66);
-        m.shape(vase);
-        m.popMatrix();
-    }
-
 
 }

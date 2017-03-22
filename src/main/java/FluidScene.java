@@ -92,7 +92,9 @@ public class FluidScene extends PApplet {
     @Override
     public void draw() {
         // display vase
-        shape(vase.getVase(),vase.x,vase.y);
+        vase.animation();
+        //vase.driveXPos();
+
 
         // update simulation
         if(UPDATE_FLUID){
