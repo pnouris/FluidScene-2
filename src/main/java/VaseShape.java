@@ -16,6 +16,7 @@ public class VaseShape {
     private float speed;
     private PApplet m;
     private MyFluidData fluid;
+    public int movement = 0;
 
 
     public VaseShape(PShape vase, PApplet applet, MyFluidData fluid) {
@@ -61,7 +62,7 @@ public class VaseShape {
         PVector origPosition = new PVector(150,80,0);
 
         // Set rotation angles
-        float angle = m.radians(m.frameCount);
+        float angle = m.radians(movement);
         m.pushMatrix();
         m.translate(m.width/2, m.height/2,  z);
         m.rotateZ(angle);

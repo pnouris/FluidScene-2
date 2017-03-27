@@ -42,6 +42,7 @@ public class FluidScene extends PApplet {
     boolean DISPLAY_FLUID_TEXTURES     = true;
     boolean DISPLAY_FLUID_VECTORS      = false;
     int DISPLAY_fluid_texture_mode = 0;
+    boolean moveVase = true;
 
     public static void main(String args[]) {
         PApplet.main("FluidScene");
@@ -93,6 +94,7 @@ public class FluidScene extends PApplet {
     public void draw() {
         // display vase
         vase.animation();
+        if(moveVase) vase.movement++;
 
 
         // update simulation
@@ -166,6 +168,7 @@ public class FluidScene extends PApplet {
 
         if(key == 'q') DISPLAY_FLUID_TEXTURES = !DISPLAY_FLUID_TEXTURES;
         if(key == 'w') DISPLAY_FLUID_VECTORS  = !DISPLAY_FLUID_VECTORS;
+        if (key == '.') moveVase = !moveVase;
     }
 
     public void createGUI(){
