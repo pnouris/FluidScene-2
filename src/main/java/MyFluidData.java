@@ -29,9 +29,9 @@ public class MyFluidData implements DwFluid2D.FluidData {
         //py = vase.getCurrentLocation().y;
 
         radius = 20;
-        r = 1.0f;
-        g = 0.0f;
-        b = 0.0f;
+        r = (float)30/255;
+        g = (float)144/255;
+        b = (float)255/255;
         fluid.addDensity(px, py, radius, r, g, b, intensity);
         fluid.addVelocity(px, -5, radius, 0, -5);
 
