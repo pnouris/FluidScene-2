@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -14,6 +14,9 @@
     <orderEntry type="library" name="controlP5" level="project" />
     <orderEntry type="library" name="PixelFlow" level="project" />
     <orderEntry type="library" name="gluegen-rt-natives-linux-amd64" level="project" />
+    <orderEntry type="library" name="toxiclibscore" level="project" />
+    <orderEntry type="library" name="toxiclibs_p5" level="project" />
+    <orderEntry type="library" name="unlekkerLib" level="project" />
     <orderEntry type="library" name="Maven: org.processing:core:3.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.jogamp.gluegen:gluegen-rt-main:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.jogamp.gluegen:gluegen-rt:2.3.2" level="project" />
@@ -41,8 +44,5 @@
     <orderEntry type="library" name="Maven: org.jogamp.jogl:jogl-all:natives-solaris-i586:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.jogamp.jogl:jogl-all:natives-windows-amd64:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: org.jogamp.jogl:jogl-all:natives-windows-i586:2.3.2" level="project" />
-    <orderEntry type="library" name="toxiclibscore" level="project" />
-    <orderEntry type="library" name="toxiclibs_p5" level="project" />
-    <orderEntry type="library" name="unlekkerLib" level="project" />
   </component>
 </module>
