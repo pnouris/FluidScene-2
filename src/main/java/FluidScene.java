@@ -93,8 +93,6 @@ public class FluidScene extends PApplet {
     public void draw() {
         // display vase
         vase.animation();
-        //try to do this negative to see if it works!
-        //vase.driveXPos();
 
 
         // update simulation
