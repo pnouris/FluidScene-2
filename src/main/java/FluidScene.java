@@ -20,8 +20,8 @@ public class FluidScene extends PApplet {
     VaseShape vase;
 
     private ControlP5 cp5;
-    int viewport_w = 800;
-    int viewport_h = 800;
+    int viewport_w = 600;
+    int viewport_h = 600;
     int fluidgrid_scale = 1;
 
     int gui_w = 200;
@@ -56,7 +56,6 @@ public class FluidScene extends PApplet {
     @Override
     public void setup() {
 
-        vase = new VaseShape(loadShape("src\\main\\resources\\asd.obj"),this);
 
         // main library context
         DwPixelFlow context = new DwPixelFlow(this);
@@ -74,7 +73,7 @@ public class FluidScene extends PApplet {
 
         // interface for adding data to the fluid simulation
         createGUI();
-        MyFluidData cb_fluid_data = new MyFluidData(this,cp5,vase);
+        MyFluidData cb_fluid_data = new MyFluidData(this,cp5);
         fluid.addCallback_FluiData(cb_fluid_data);
 
         // pgraphics for fluid
@@ -87,12 +86,14 @@ public class FluidScene extends PApplet {
         // Add vase
 
         //obstacle_painter = new ObstaclePainter(pg_obstacles);
+        vase = new VaseShape(loadShape("src\\main\\resources\\blue_bird.obj"),this,cb_fluid_data);
     }
 
     @Override
     public void draw() {
         // display vase
         vase.animation();
+        //try to do this negative to see if it works!
         //vase.driveXPos();
 
 

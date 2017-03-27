@@ -9,23 +9,25 @@ public class MyFluidData implements DwFluid2D.FluidData {
 
     PApplet parent;
     private ControlP5 cp5;
-    private VaseShape vase;
-
-    public MyFluidData(PApplet parent, ControlP5 cp5, VaseShape vase) {
+    float px, py;
+    public MyFluidData(PApplet parent, ControlP5 cp5) {
         this.parent = parent;
         this.cp5 = cp5;
-        this.vase = vase;
+        //px = 0;
+        //py = 0;
     }
 
     // update() is called during the fluid-simulation update step.
     public void update(DwFluid2D fluid) {
 
-        float px, py, vx, vy, radius, vscale, r, g, b, intensity, temperature;
+        float vx, vy, radius, vscale, r, g, b, intensity, temperature;
 
         // add impulse: density + temperature
         intensity = 1.0f;
-        px = vase.getCurrentLocation().x;
-        py = vase.getCurrentLocation().y;
+        //I am setting the values in the other class to make it easier (for the moment) to understand
+        //px = vase.getCurrentLocation().x;
+        //py = vase.getCurrentLocation().y;
+
         radius = 20;
         r = 1.0f;
         g = 0.0f;
