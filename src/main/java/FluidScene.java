@@ -29,12 +29,12 @@ public class FluidScene extends PApplet {
     int gui_y = 20;
 
     DwFluid2D fluid;
-    //ObstaclePainter obstacle_painter;
+    ObstaclePainter obstacle_painter;
 
     // render targets
     PGraphics2D pg_fluid;
     //texture-buffer, for adding obstacles
-    PGraphics3D pg_obstacles;
+    PGraphics2D pg_obstacles;
 
     // some state variables for the GUI/display
     int     BACKGROUND_COLOR           = 0;
@@ -84,9 +84,19 @@ public class FluidScene extends PApplet {
         pg_fluid.background(BACKGROUND_COLOR);
         pg_fluid.endDraw();
 
-        // Add vase
+        pg_obstacles = (PGraphics2D) createGraphics(viewport_w, viewport_h, P2D);
+        pg_obstacles.smooth(0);
+        pg_obstacles.beginDraw();
+        pg_obstacles.clear();
+        // circle-obstacles
+        pg_obstacles.stroke(255);
+        pg_obstacles.strokeWeight(4);
+        pg_obstacles.line(30, 20, width, height);
+        pg_obstacles.endDraw();
 
-        //obstacle_painter = new ObstaclePainter(pg_obstacles);
+
+
+        obstacle_painter = new ObstaclePainter(pg_obstacles,this);
         vase = new VaseShape(loadShape("src\\main\\resources\\blue_bird.obj"),this,cb_fluid_data);
     }
 
@@ -99,7 +109,7 @@ public class FluidScene extends PApplet {
 
         // update simulation
         if(UPDATE_FLUID){
-            //fluid.addObstacles(pg_obstacles);
+            fluid.addObstacles(pg_obstacles);
             fluid.update();
         }
 
@@ -123,9 +133,9 @@ public class FluidScene extends PApplet {
 
         // display
         image(pg_fluid    , 0, 0);
-        //image(pg_obstacles, 0, 0);
+        image(pg_obstacles, 0, 0);
 
-        // obstacle_painter.displayBrush(this.g);
+        obstacle_painter.displayBrush(this.g);
 
         // info
         String txt_fps = String.format(getClass().getName()+ "   [size %d/%d]   [frame %d]   [fps %6.2f]", fluid.fluid_w, fluid.fluid_h, fluid.simulation_step, frameRate);
