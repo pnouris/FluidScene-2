@@ -8,10 +8,13 @@
  */
 
 
+import java.io.File;
+
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.dwgl.DwGLSLProgram;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluidParticleSystem2D;
+import com.thomasdiewald.pixelflow.java.utils.DwFrameCapture;
 
 import controlP5.Accordion;
 import controlP5.ControlP5;
@@ -177,7 +180,7 @@ import processing.opengl.PGraphics2D;
     fluid.addCallback_FluiData(cb_fluid_data);
 
     // processing font
-    font = createFont("SourceCodePro-Regular.ttf", 128);
+    font = createFont("../data/SourceCodePro-Regular.ttf", 128);
 
     // fluid render target
     pg_fluid = (PGraphics2D) createGraphics(viewport_w, viewport_h, P2D);
@@ -209,7 +212,7 @@ import processing.opengl.PGraphics2D;
     drawText(pg_text);
 
     // sprite for fluid particles
-    img_sprite = loadImage("sprite.png");
+    img_sprite = loadImage("../data/sprite.png");
     
     createGUI();
 
@@ -324,6 +327,14 @@ import processing.opengl.PGraphics2D;
     
     if(key == 'q') DISPLAY_FLUID_TEXTURES = !DISPLAY_FLUID_TEXTURES;
     if(key == 'w') DISPLAY_FLUID_VECTORS  = !DISPLAY_FLUID_VECTORS;
+    if(key == 's') saveScreenshot();
+  }
+  
+  public void saveScreenshot(){
+    DwFrameCapture capture = new DwFrameCapture(this, "examples/");
+    File file = capture.createFilename();
+    save(file.getAbsolutePath());
+    System.out.println(file);
   }
  
   

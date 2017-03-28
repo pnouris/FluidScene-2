@@ -8,7 +8,14 @@
  */
 
 
-static public class ParticleSystem {
+import com.thomasdiewald.pixelflow.java.softbodydynamics.particle.DwParticle2D;
+
+import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PGraphics;
+import processing.core.PShape;
+
+static class ParticleSystem {
   
   
   // for customizing the particle we just extends the original class and
@@ -122,8 +129,6 @@ static public class ParticleSystem {
       particles[i].setShape(shp_particle);
       shp_particlesystem.addChild(shp_particle);
     }
-    // https://github.com/processing/processing/issues/4662
-    shp_particlesystem.getTessellation();
   }
   
   

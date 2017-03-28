@@ -7,6 +7,8 @@
  * 
  */
 
+
+
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.dwgl.DwGLSLProgram;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
@@ -19,6 +21,8 @@ import controlP5.RadioButton;
 import controlP5.Toggle;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
+
+
 
   // Fluid_LiquidPainting loads an image and uses it as a density source by
   // copying each pixels rgb data to the density map of the fluid solver.
@@ -154,7 +158,7 @@ import processing.opengl.PGraphics2D;
     fluid.addCallback_FluiData(cb_fluid_data);
     
     // image, used for density
-    image = loadImage("mc_escher.jpg");
+    image = loadImage("../data/mc_escher.jpg");
 
     // fluid render target
     pg_fluid = (PGraphics2D) createGraphics(viewport_w, viewport_h, P2D);
@@ -354,5 +358,4 @@ import processing.opengl.PGraphics2D;
       .addItem(group_display)
       .open(4);
   }
-  
   

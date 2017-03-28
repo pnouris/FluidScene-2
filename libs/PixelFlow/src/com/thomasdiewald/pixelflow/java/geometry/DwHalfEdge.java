@@ -9,6 +9,7 @@
 
 package com.thomasdiewald.pixelflow.java.geometry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.thomasdiewald.pixelflow.java.accelerationstructures.DwStack;
@@ -58,6 +59,18 @@ public class DwHalfEdge {
     
     public Mesh(DwIndexedFaceSetAble ifs){
       create(ifs);
+    }
+    
+    public void addFaces(ArrayList<Face> faces_list_new){
+      int num_faces_new = faces_list_new.size();
+      int num_faces_old = faces.length;
+      
+      Face[] faces_new = faces_list_new.toArray(new Face[num_faces_new]);
+      Face[] faces_old = faces;
+      
+      faces = new Face[num_faces_old + num_faces_new];
+      System.arraycopy(faces_old, 0, faces,             0, num_faces_old);
+      System.arraycopy(faces_new, 0, faces, num_faces_old, num_faces_new);
     }
     
     private void create(DwIndexedFaceSetAble ifs){
@@ -148,7 +161,7 @@ public class DwHalfEdge {
           edges[count] = iter;
         }
         count++;
-      } while((iter = iter.pair.next) != edge);
+      } while(iter.pair != null && (iter = iter.pair.next) != edge);
       return count;
     }
     
@@ -174,7 +187,7 @@ public class DwHalfEdge {
       float[] v;
       while(!stack.isEmpty()){
         edge = stack.pop();
-        if(getFLAG_display(edge)){
+        if(edge != null && getFLAG_display(edge)){
           DwHalfEdge.Edge iter = edge;
           pg.beginShape();
           do {
@@ -199,7 +212,7 @@ public class DwHalfEdge {
       pg.beginShape(PConstants.QUADS);
       while(!stack.isEmpty()){
         edge = stack.pop();
-        if(getFLAG_display(edge)){
+        if(edge != null && getFLAG_display(edge)){
           // draw quad
           v = verts[edge.vert]; edge = edge.next; pg.vertex(v[0], v[1], v[2]); 
           v = verts[edge.vert]; edge = edge.next; pg.vertex(v[0], v[1], v[2]); 
@@ -223,7 +236,7 @@ public class DwHalfEdge {
       pg.beginShape(PConstants.TRIANGLES);
       while(!stack.isEmpty()){
         edge = stack.pop();
-        if(getFLAG_display(edge)){
+        if(edge != null && getFLAG_display(edge)){
           // draw triangle
           v = verts[edge.vert]; edge = edge.next; pg.vertex(v[0], v[1], v[2]); 
           v = verts[edge.vert]; edge = edge.next; pg.vertex(v[0], v[1], v[2]); 

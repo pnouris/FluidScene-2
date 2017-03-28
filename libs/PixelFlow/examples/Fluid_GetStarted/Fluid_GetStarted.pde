@@ -8,13 +8,14 @@
  */
 
 
+
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 
 import processing.core.*;
 import processing.opengl.PGraphics2D;
 
-
+ 
   // Hello World Example for fluid simulations.
   //
   // Controls:

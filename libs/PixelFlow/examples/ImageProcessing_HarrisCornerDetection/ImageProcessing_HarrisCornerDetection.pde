@@ -8,7 +8,6 @@
  */
 
 
-
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.imageprocessing.DwHarrisCorner;
 import com.thomasdiewald.pixelflow.java.imageprocessing.filter.DwFilter;
@@ -18,7 +17,6 @@ import controlP5.Group;
 import controlP5.Slider;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
-
 
 
   //
@@ -58,7 +56,7 @@ import processing.opengl.PGraphics2D;
   int gui_w = 200;
   
   public void settings() {
-    img = loadImage("mc_escher.jpg");
+    img = loadImage("../data/mc_escher.jpg");
     
     view_w = img.width;
     view_h = img.height;
@@ -318,4 +316,5 @@ import processing.opengl.PGraphics2D;
     DISPLAY_PEPPER   = val[2] > 0.0;
     DISPLAY_CHECKER  = val[3] > 0.0;
   }
+  
   

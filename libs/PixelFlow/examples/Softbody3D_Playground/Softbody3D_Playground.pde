@@ -8,6 +8,7 @@
  */
 
 
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -32,6 +33,7 @@ import processing.core.PFont;
 import processing.core.PShape;
 import processing.opengl.PGraphics2D;
 import processing.opengl.PGraphics3D;
+
 
   //
   // 3D Softbody Sandbox, to debug/test/profile everything.
@@ -96,7 +98,7 @@ import processing.opengl.PGraphics3D;
   PGraphics2D texture;
   
   // global states
-  int BACKGROUND_COLOR = 92;
+  int BACKGROUND_COLOR = 32;
   
   // 0 ... default: particles, spring
   // 1 ... tension
@@ -1065,5 +1067,3 @@ import processing.opengl.PGraphics3D;
    
   }
   
-
- 

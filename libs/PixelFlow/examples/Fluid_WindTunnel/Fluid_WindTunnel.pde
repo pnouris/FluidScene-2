@@ -7,10 +7,6 @@
  * 
  */
 
-
-
-
-
 import java.util.ArrayList;
 
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
@@ -27,7 +23,6 @@ import processing.core.*;
 import processing.opengl.PGraphics2D;
 
 
-  
   // Windtunnel, combining most of the other examples.
 
   private class MyFluidData implements DwFluid2D.FluidData{
@@ -180,7 +175,7 @@ import processing.opengl.PGraphics2D;
     fluid.addCallback_FluiData(cb_fluid_data);
 
     // processing font
-    font = createFont("SourceCodePro-Regular.ttf", 48);
+    font = createFont("../data/SourceCodePro-Regular.ttf", 48);
 
     // fluid render target
     pg_fluid = (PGraphics2D) createGraphics(viewport_w, viewport_h, P2D);
@@ -802,4 +797,4 @@ import processing.opengl.PGraphics2D;
    
   }
   
- 
+  

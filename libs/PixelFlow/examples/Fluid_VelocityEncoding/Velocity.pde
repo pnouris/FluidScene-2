@@ -18,7 +18,7 @@
  */
 
 // namespace Velocity
-static public class Velocity{
+static class Velocity{
   
   static final public float TWO_PI = (float) (Math.PI * 2.0f);
   

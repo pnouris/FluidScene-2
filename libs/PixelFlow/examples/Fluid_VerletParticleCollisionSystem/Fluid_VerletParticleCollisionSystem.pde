@@ -8,7 +8,6 @@
  */
 
 
-
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 import com.thomasdiewald.pixelflow.java.softbodydynamics.DwPhysics;
@@ -21,10 +20,6 @@ import controlP5.RadioButton;
 import controlP5.Toggle;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
-import processing.core.PConstants;
-import processing.core.PGraphics;
-import processing.core.PImage;
-import processing.core.PShape;
 
 
   // VerletParticles, motion driven by the fluid-velocity.
@@ -530,3 +525,4 @@ import processing.core.PShape;
       .open(1);
   }
   
+   

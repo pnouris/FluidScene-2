@@ -16,7 +16,6 @@ import peasy.PeasyCam;
 import processing.core.*;
 import processing.opengl.PGraphics3D;
 
-
   // A demo to create a Subdivision Icosahedron, and either render it by as usual, 
   // or convert it to a HalfEdge representation and use that for rendering and
   // more complex mesh operations/iterations.
@@ -40,7 +39,7 @@ import processing.opengl.PGraphics3D;
  
   public void setup() {
     cam = new PeasyCam(this, 1000);
-    createMesh(3);
+    createMesh(2);
   }
   
   public void createMesh(int subdivisions){
@@ -50,7 +49,7 @@ import processing.opengl.PGraphics3D;
   
   public void draw() {
     lights();
-    pointLight(128, 96, 64, 500, 500, -1000);
+    directionalLight(128, 96, 64, -500, -500, +1000);
     
     background(64);
     displayGizmo(300);
@@ -98,17 +97,17 @@ import processing.opengl.PGraphics3D;
       switch(face.length){
       case 3: 
         beginShape(TRIANGLE);
-        v = verts[face[0]];  vertex(v[0], v[1], v[2]);
-        v = verts[face[1]];  vertex(v[0], v[1], v[2]);
         v = verts[face[2]];  vertex(v[0], v[1], v[2]);
+        v = verts[face[1]];  vertex(v[0], v[1], v[2]);
+        v = verts[face[0]];  vertex(v[0], v[1], v[2]);
         endShape();
         break;
       case 4: 
         beginShape(QUAD);
-        v = verts[face[0]];  vertex(v[0], v[1], v[2]);
-        v = verts[face[1]];  vertex(v[0], v[1], v[2]);
-        v = verts[face[2]];  vertex(v[0], v[1], v[2]);
         v = verts[face[3]];  vertex(v[0], v[1], v[2]);
+        v = verts[face[2]];  vertex(v[0], v[1], v[2]);
+        v = verts[face[1]];  vertex(v[0], v[1], v[2]);
+        v = verts[face[0]];  vertex(v[0], v[1], v[2]);
         endShape();
         break;
       default:

@@ -21,6 +21,11 @@ public class DwParticle3D extends DwParticle{
   public float px = 0, py = 0, pz = 0; // previous position
   public float ax = 0, ay = 0, az = 0; // acceleration
 
+  
+  public DwParticle3D(int idx) {
+    super(idx);
+  }
+  
   public DwParticle3D(int idx, float x, float y, float z, float rad) {
     super(idx);
     setPosition(x, y, z);
@@ -154,13 +159,15 @@ public class DwParticle3D extends DwParticle{
     if(!enable_collisions) return;
     final float[] bd = bounds;
     float vx, vy, vz;
-    float damping = param.DAMP_BOUNDS;
-    if ((cx - rad) < bd[0]) {vx=cx-px;vy=cy-py;vz=cz-pz; cx=bd[0]+rad;px=cx+vx*damping;py=cy-vy*damping;pz=cz-vz*damping;}
-    if ((cx + rad) > bd[3]) {vx=cx-px;vy=cy-py;vz=cz-pz; cx=bd[3]-rad;px=cx+vx*damping;py=cy-vy*damping;pz=cz-vz*damping;}
-    if ((cy - rad) < bd[1]) {vx=cx-px;vy=cy-py;vz=cz-pz; cy=bd[1]+rad;px=cx-vx*damping;py=cy+vy*damping;pz=cz-vz*damping;}
-    if ((cy + rad) > bd[4]) {vx=cx-px;vy=cy-py;vz=cz-pz; cy=bd[4]-rad;px=cx-vx*damping;py=cy+vy*damping;pz=cz-vz*damping;}
-    if ((cz - rad) < bd[2]) {vx=cx-px;vy=cy-py;vz=cz-pz; cz=bd[2]+rad;px=cx-vx*damping;py=cy-vy*damping;pz=cz+vz*damping;}
-    if ((cz + rad) > bd[5]) {vx=cx-px;vy=cy-py;vz=cz-pz; cz=bd[5]-rad;px=cx-vx*damping;py=cy-vy*damping;pz=cz+vz*damping;}
+    float damp = param.DAMP_BOUNDS;
+//    float r = rad;
+    float r = radCollision();
+    if ((cx - r) < bd[0]) {vx=cx-px;vy=cy-py;vz=cz-pz; cx=bd[0]+r;px=cx+vx*damp;py=cy-vy*damp;pz=cz-vz*damp;}
+    if ((cx + r) > bd[3]) {vx=cx-px;vy=cy-py;vz=cz-pz; cx=bd[3]-r;px=cx+vx*damp;py=cy-vy*damp;pz=cz-vz*damp;}
+    if ((cy - r) < bd[1]) {vx=cx-px;vy=cy-py;vz=cz-pz; cy=bd[1]+r;px=cx-vx*damp;py=cy+vy*damp;pz=cz-vz*damp;}
+    if ((cy + r) > bd[4]) {vx=cx-px;vy=cy-py;vz=cz-pz; cy=bd[4]-r;px=cx-vx*damp;py=cy+vy*damp;pz=cz-vz*damp;}
+    if ((cz - r) < bd[2]) {vx=cx-px;vy=cy-py;vz=cz-pz; cz=bd[2]+r;px=cx-vx*damp;py=cy-vy*damp;pz=cz+vz*damp;}
+    if ((cz + r) > bd[5]) {vx=cx-px;vy=cy-py;vz=cz-pz; cz=bd[5]-r;px=cx-vx*damp;py=cy-vy*damp;pz=cz+vz*damp;}
   }
   
   
@@ -209,7 +216,24 @@ public class DwParticle3D extends DwParticle{
     if(shp_transform != null){
       shp_transform.reset();
       shp_transform.translate(cx, cy, cz);
-//      shp_transform.rotate((float)Math.atan2(cy-py, cx-px));
+      // TODO: rotation matrix
+      // normalize up vector
+//      float vx = cx - px;
+//      float vy = cy - py;
+//      float vz = cz - pz;
+//      float vlen = (float) (1.0/ Math.sqrt(vx*vx + vy*vy + vz*vz));
+//      vx *= vlen;
+//      vy *= vlen;
+//      vz *= vlen;
+//      PMatrix3D shp_rot = new PMatrix3D();
+//      // [m00 m01 m02 m03]
+//      // [m10 m11 m12 m13]
+//      // [m20 m21 m22 m23]
+//      // [m30 m31 m32 m33]
+//      shp_rot.m02 = vx;
+//      shp_rot.m12 = vy;
+//      shp_rot.m22 = vz;
+//      shp_transform.apply(shp_rot);
     }
 
     // update shape position
@@ -250,6 +274,75 @@ public class DwParticle3D extends DwParticle{
       cross[2] += (dxA * dyB) - (dxB * dyA);
       return 1;
     }
+  }
+  
+  // TODO, move to some Utils class
+  static public int crossAccum(float[] p, float[] pA, float[] pB, float[] cross){
+    if(pA == null ||pB == null){
+      return 0;
+    } else {
+      float dxA = pA[0] - p[0];
+      float dyA = pA[1] - p[1];
+      float dzA = pA[2] - p[2];
+      
+      float dxB = pB[0] - p[0];
+      float dyB = pB[1] - p[1];
+      float dzB = pB[2] - p[2];
+      
+      cross[0] += (dyA * dzB) - (dyB * dzA);
+      cross[1] += (dzA * dxB) - (dzB * dxA);
+      cross[2] += (dxA * dyB) - (dxB * dyA);
+      return 1;
+    }
+  }
+  
+  
+  static public int crossAccumNormalized(DwParticle3D p, DwParticle3D pA, DwParticle3D pB, float[] cross){
+    if(pA == null || pA.all_springs_deactivated ||
+       pB == null || pB.all_springs_deactivated)
+    {
+      return 0;
+    } else {
+      float dxA = pA.cx - p.cx;
+      float dyA = pA.cy - p.cy;
+      float dzA = pA.cz - p.cz;
+      
+      float dxB = pB.cx - p.cx;
+      float dyB = pB.cy - p.cy;
+      float dzB = pB.cz - p.cz;
+      
+      float nx = (dyA * dzB) - (dyB * dzA);
+      float ny = (dzA * dxB) - (dzB * dxA);
+      float nz = (dxA * dyB) - (dxB * dyA);
+      
+      float dd_sq = nx*nx + ny*ny + nz*nz;
+      if(dd_sq == 0.0f) return 0;
+      
+      float dd_inv = 1f / (float) Math.sqrt(dd_sq);
+      
+      cross[0] += nx * dd_inv;
+      cross[1] += ny * dd_inv;
+      cross[2] += nz * dd_inv;
+      return 1;
+    }
+  }
+  
+  
+  static public void normalize(float[] vec3){
+    float dd_sq = vec3[0]*vec3[0] + vec3[1]*vec3[1] + vec3[2]*vec3[2];
+    if(dd_sq == 0.0f) return;
+    float dd_inv = 1f / (float) Math.sqrt(dd_sq);
+    vec3[0] *= dd_inv;
+    vec3[1] *= dd_inv;
+    vec3[2] *= dd_inv;
+  }
+  
+  static public float dot(float[] a, float[] b){
+    return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+  }
+  
+  static public float magSq(float[] a){
+    return a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
   }
 
   

@@ -1,7 +1,9 @@
 package com.thomasdiewald.pixelflow.java.softbodydynamics.softbody;
 
 
+import com.thomasdiewald.pixelflow.java.geometry.DwIcosahedron;
 import com.thomasdiewald.pixelflow.java.geometry.DwIndexedFaceSetAble;
+import com.thomasdiewald.pixelflow.java.geometry.DwMeshUtils;
 import com.thomasdiewald.pixelflow.java.softbodydynamics.constraint.DwSpringConstraint3D;
 import com.thomasdiewald.pixelflow.java.softbodydynamics.particle.DwParticle3D;
 
@@ -17,6 +19,9 @@ public abstract class DwSoftBody3D extends DwSoftBody{
   // Override what we want to customize
   public class CustomParticle3D extends DwParticle3D{
     
+    public CustomParticle3D(int idx, float[] v, float rad) {
+      super(idx, v[0], v[1], v[2], rad);
+    }
     
     public CustomParticle3D(int idx, float x, float y, float z, float rad) {
       super(idx, x, y, z, rad);
@@ -25,8 +30,13 @@ public abstract class DwSoftBody3D extends DwSoftBody{
     @Override
     public void updateShapeColor(){
       if(use_particles_color){
-        setColor(particle_color);
-        shp_particle.setStroke(particle_color);
+        if(collision_group_id != this.collision_group){
+          setColor(particle_color2);
+          shp_particle.setStroke(particle_color2);
+        } else {
+          setColor(particle_color);
+          shp_particle.setStroke(particle_color);
+        }
       } else {
         setColor(particle_gray);
         shp_particle.setStroke(particle_gray);
@@ -45,92 +55,56 @@ public abstract class DwSoftBody3D extends DwSoftBody{
   }
   
   
-  
-
 
   //////////////////////////////////////////////////////////////////////////////
   // RENDERING
   //////////////////////////////////////////////////////////////////////////////
+  @Override
   public void createParticlesShape(PApplet papplet){
+    createParticlesShape(papplet, false);
+  }
+  
+  @Override
+  public void createParticlesShape(PApplet papplet, boolean icosahedron){
     papplet.shapeMode(PConstants.CORNER);
+
     shp_particles = papplet.createShape(PShape.GROUP);
     for(int i = 0; i < particles.length; i++){
-      PShape shp_pa = createShape(papplet, particles[i]);
+      PShape shp_pa = createShape(papplet, particles[i], icosahedron);
       particles[i].setShape(shp_pa);
       shp_particles.addChild(shp_pa);
     }
-//    shp_particles.getTessellation();
   }
+  
+  
+
 
   
 
-  DwIndexedFaceSetAble ifs;
+  private DwIndexedFaceSetAble ifs;
   
-  PShape createShape(PApplet papplet, DwParticle3D particle){
+  private PShape createShape(PApplet papplet, DwParticle3D particle, boolean icosahedron){
     PShape shape;
     
-    shape = papplet.createShape(PConstants.POINT, 0, 0);
-    shape.setStroke(true);
-    shape.setStrokeWeight(6);
-
-//    if(ifs == null){
-//      ifs = new DwIcosahedron(1);
-////      ifs = new DwCube(1);
-//    }
-//    shape = papplet.createShape(PShape.GEOMETRY);
-//    createPolyhedronShape(shape, ifs, particle.rad, 3, true);
+    if(!icosahedron){
+      shape = papplet.createShape(PConstants.POINT, 0, 0);
+      shape.setStroke(true);
+      shape.setStrokeWeight(6);
+    } else {
+      if(ifs == null){
+        ifs = new DwIcosahedron(1);
+//        ifs = new DwCube(1);
+      }
+      shape = papplet.createShape(PShape.GEOMETRY);
+      shape.setStroke(false);
+      DwMeshUtils.createPolyhedronShape(shape, ifs, particle.rad, 3, true);
+    }
 
     return shape;
   }
   
-  
-  public void createPolyhedronShape(PShape shape, DwIndexedFaceSetAble ifs, float scale, int verts_per_face, boolean smooth){
-    
-    int type = -1;
-    
-    switch(verts_per_face){
-      case 3: type = PConstants.TRIANGLES; break;
-      case 4: type = PConstants.QUADS; break;
-      default: return;
-    }
-   
-    shape.beginShape(type);
-    shape.noStroke();
-    
-    int  [][] faces = ifs.getFaces();
-    float[][] verts = ifs.getVerts();
-    
-    for(int[] face : faces){
-      float nx = 0, ny = 0, nz = 0;
 
-      int num_verts = face.length;
-      
-      // compute face normal
-      if(!smooth){
-        for(int i = 0; i < num_verts; i++){
-          int vi = face[i];
-          nx += verts[vi][0];
-          ny += verts[vi][1];
-          nz += verts[vi][2];
-        }
-        nx /= num_verts;
-        ny /= num_verts;
-        nz /= num_verts;
-        shape.normal(nx, ny, nz); 
-      }
-      
-      for(int i = 0; i < num_verts; i++){
-        float[] v = verts[face[i]];
-        if(smooth){
-          shape.normal(v[0], v[1], v[2]); 
-        }
-        shape.vertex(v[0]*scale, v[1]*scale, v[2]*scale);
-      }
-    }
-    shape.endShape(PConstants.CLOSE);
-  }
-  
-
+  @Override
   public void displaySprings(PGraphics pg, int display_mode){
     if(display_mode == -1) return;
     

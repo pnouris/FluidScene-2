@@ -9,6 +9,7 @@
 
 
 
+
 import java.util.Locale;
 
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
@@ -25,6 +26,8 @@ import controlP5.Toggle;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
 import processing.video.Movie;
+
+
 
   //
   // This Demo-App combines Optical Flow (based on Movie frames) and Fluid 
@@ -258,7 +261,8 @@ import processing.video.Movie;
     pg_oflow.smooth(4);
     
     
-    font = createFont("SourceCodePro-Regular.ttf", 12);
+    font = createFont("../data/SourceCodePro-Regular.ttf", 12);
+    
     
     // movie file is not contained in the library release
     // to keep the file size small. please use one of your own videos instead.

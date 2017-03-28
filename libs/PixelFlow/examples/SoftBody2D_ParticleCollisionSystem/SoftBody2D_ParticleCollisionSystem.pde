@@ -20,6 +20,7 @@ import processing.core.*;
 
 
 
+
   //
   // 2D Verlet Particle System.
   // 
@@ -87,7 +88,7 @@ import processing.core.*;
     createGUI();
 
     background(0);
-    frameRate(60);
+    frameRate(600);
   }
   
  
@@ -206,3 +207,4 @@ import processing.core.*;
       .open(0);
   }
   
+   

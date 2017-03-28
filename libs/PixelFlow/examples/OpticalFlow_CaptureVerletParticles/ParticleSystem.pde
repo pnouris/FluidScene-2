@@ -9,8 +9,15 @@
 
 
 
+import com.thomasdiewald.pixelflow.java.softbodydynamics.particle.DwParticle2D;
 
-static public class ParticleSystem {
+import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PGraphics;
+import processing.core.PImage;
+import processing.core.PShape;
+
+static class ParticleSystem {
   
   // particle system
   public float PARTICLE_SCREEN_FILL_FACTOR = 0.9f;
@@ -104,8 +111,6 @@ static public class ParticleSystem {
   }
   
   public void initParticleShapes(){
-//    clearShapes(); // not sure if this is required
-
     papplet.shapeMode(PConstants.CORNER);
     shp_particlesystem = papplet.createShape(PShape.GROUP);
     
@@ -115,8 +120,6 @@ static public class ParticleSystem {
       particles[i].setShape(shp_particle);
       shp_particlesystem.addChild(shp_particle);
     }
-    // https://github.com/processing/processing/issues/4662
-    shp_particlesystem.getTessellation();
   }
   
   

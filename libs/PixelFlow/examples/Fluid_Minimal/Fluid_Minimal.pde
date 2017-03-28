@@ -14,7 +14,7 @@ import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
 
-  
+
   // Simple example that shows how to add Data (density, velocity) to the fluid.
   //
   // controls:

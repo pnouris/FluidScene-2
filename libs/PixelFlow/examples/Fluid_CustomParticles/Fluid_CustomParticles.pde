@@ -8,12 +8,10 @@
  */
 
 
-import com.jogamp.opengl.GL2ES2;
-import com.thomasdiewald.pixelflow.java.DwPixelFlow;
-import com.thomasdiewald.pixelflow.java.dwgl.DwGLSLProgram;
-import com.thomasdiewald.pixelflow.java.dwgl.DwGLTexture;
-import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 
+
+import com.thomasdiewald.pixelflow.java.DwPixelFlow;
+import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 
 import controlP5.Accordion;
 import controlP5.ControlP5;
@@ -22,8 +20,8 @@ import controlP5.RadioButton;
 import controlP5.Toggle;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
-import processing.core.PConstants;
 
+  
   // Fluid_CustomParticles show how to setup a completely customized particle
   // system that is interacting with the fluid simulation.
   // The particle data (positions) is stored in an OpenGL texture (GL_RGBA32F) 
@@ -386,7 +384,4 @@ import processing.core.PConstants;
       .addItem(group_display)
       .open(4);
   }
-  
-
-
   

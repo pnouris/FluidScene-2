@@ -22,7 +22,7 @@ import controlP5.Toggle;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
 
-  
+
   // A more abstract example that shows how to add velocity to the fluid-solver
   // by encoding it in a PGraphics.
   //
@@ -455,7 +455,6 @@ import processing.opengl.PGraphics2D;
     
     group_fluid.close();
   }
-  
   
   
   

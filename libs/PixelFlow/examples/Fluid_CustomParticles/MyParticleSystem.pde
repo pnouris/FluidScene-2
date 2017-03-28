@@ -9,11 +9,17 @@
 
 
 
+import com.jogamp.opengl.GL2ES2;
+import com.thomasdiewald.pixelflow.java.DwPixelFlow;
+import com.thomasdiewald.pixelflow.java.dwgl.DwGLSLProgram;
+import com.thomasdiewald.pixelflow.java.dwgl.DwGLTexture;
+import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
+
+import processing.core.PConstants;
+import processing.opengl.PGraphics2D;
 
 
-
-
-static public class MyParticleSystem{
+static class MyParticleSystem{
   
   public DwGLSLProgram shader_particleSpawn;
   public DwGLSLProgram shader_particelUpdate;

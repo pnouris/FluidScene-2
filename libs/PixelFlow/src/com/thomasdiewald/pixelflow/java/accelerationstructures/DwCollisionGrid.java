@@ -10,12 +10,13 @@
 
 package com.thomasdiewald.pixelflow.java.accelerationstructures;
 
+import java.util.Arrays;
 
 public class DwCollisionGrid{
   
   private float CELL_SIZE = 10f;
   private int   GRID_X; 
-//  private int   GRID_Y;
+  private int   GRID_Y;
 
   private int               HEAD_PTR;
   private int[]             HEAD = new int[0];
@@ -23,6 +24,22 @@ public class DwCollisionGrid{
   private DwCollisionObject[] DATA = new DwCollisionObject[0];
 
   public DwCollisionGrid(){
+  }
+  
+  public DwCollisionGrid(float[] bounds, float max_radius){
+    init(bounds, max_radius);
+  }
+  
+  
+  public void init(float[] bounds_, float max_radius){
+    CELL_SIZE = max_radius * 2;
+    bounds = bounds_;
+    int gx = (int) Math.ceil((bounds[3] - bounds[0])/CELL_SIZE)+1;
+    int gy = (int) Math.ceil((bounds[4] - bounds[1])/CELL_SIZE)+1;
+    int ppll_len = gx * gy * 4; // just a guess
+    
+    // 1) resize if necessary
+    resize(gx, gy, ppll_len);
   }
   
   private void resize(int gx, int gy, int PPLL_size){
@@ -36,7 +53,7 @@ public class DwCollisionGrid{
     // NEXT pointers, DATA array
     if(PPLL_size > NEXT.length){
       int size_new = (int)(PPLL_size * 1.2f);
-      NEXT = new int            [size_new];
+      NEXT = new int              [size_new];
       DATA = new DwCollisionObject[size_new];
 //      System.out.println("CollisionGridAccelerator.resize -> NEXT/DATA: "+size_new+", "+PPLL_size);
     }
@@ -51,42 +68,104 @@ public class DwCollisionGrid{
     
     // set grid size
     GRID_X = gx;
-//    GRID_Y = gy;
+    GRID_Y = gy;
   }
   
   
   
-  private void create(DwCollisionObject[] particles, int num_particles){
+  public void insertRealloc(DwCollisionObject object){
+    int TMP_HEAD_PTR = HEAD_PTR;
+    insert(object);
+    
+    // resize if necessary
+    if(HEAD_PTR > NEXT.length){
+      // push
+      int[]               TMP_HEAD = Arrays.copyOf(HEAD, HEAD.length);
+      int[]               TMP_NEXT = Arrays.copyOf(NEXT, NEXT.length);
+      DwCollisionObject[] TMP_DATA = Arrays.copyOf(DATA, DATA.length);
+      
+      // realloc
+      resize(GRID_X, GRID_Y, HEAD_PTR);
+      
+      // pop
+      HEAD_PTR = TMP_HEAD_PTR;
+      System.arraycopy(TMP_HEAD, 0, HEAD, 0, TMP_HEAD.length);
+      System.arraycopy(TMP_NEXT, 0, NEXT, 0, TMP_NEXT.length);
+      System.arraycopy(TMP_DATA, 0, DATA, 0, TMP_DATA.length);
+      
+      // insert again
+      insert(object);
+    }
+  }
+  
+  
+//  public void testCollision
+  
+  
+  public void insert(DwCollisionObject object){
+    float pr = object.radCollision();
+    float px = object.x();
+    float py = object.y();
+    
+    px -= bounds[0];
+    py -= bounds[1];
+    
+    int xmin = (int)((px-pr)/CELL_SIZE);  xmin = Math.max(xmin, 0);
+    int xmax = (int)((px+pr)/CELL_SIZE);  xmax = Math.min(xmax, GRID_X-1);
+    int ymin = (int)((py-pr)/CELL_SIZE);  ymin = Math.max(ymin, 0);
+    int ymax = (int)((py+pr)/CELL_SIZE);  ymax = Math.min(ymax, GRID_Y-1);
+    
+    int count = (xmax - xmin + 1) * (ymax - ymin + 1);
+    if(HEAD_PTR + count > NEXT.length){
+      HEAD_PTR += count; // prepare for reallocation
+      return;
+    }
 
+    for(int y = ymin; y <= ymax ; y++){
+      for(int x = xmin; x <= xmax ; x++){
+        int gid = y * GRID_X + x;
+        int new_head = HEAD_PTR++;
+        int old_head = HEAD[gid]; HEAD[gid] = new_head; // xchange head pointer
+        NEXT[new_head] = old_head;
+        DATA[new_head] = object;
+      }
+    }
+  }
+  
+
+  
+  
+  private void create(DwCollisionObject[] particles, int num_particles){
     for(int i = 0; i < num_particles; i++){
-      DwCollisionObject particle = particles[i];
-      float pr = particle.radCollision();
-      float px = particle.x();
-      float py = particle.y();
-      
-      px -= bounds[0];
-      py -= bounds[1];
-      
-      int xmin = (int)((px-pr)/CELL_SIZE); // xmin = Math.max(xmin, 0);
-      int xmax = (int)((px+pr)/CELL_SIZE); // xmax = Math.min(xmax, GRID_X-1);
-      int ymin = (int)((py-pr)/CELL_SIZE); // ymin = Math.max(ymin, 0);
-      int ymax = (int)((py+pr)/CELL_SIZE); // ymax = Math.min(ymax, GRID_Y-1);
-      
-      for(int y = ymin; y <= ymax ; y++){
-        for(int x = xmin; x <= xmax ; x++){
-          int gid = y * GRID_X + x;
-          int new_head = HEAD_PTR++;
-          int old_head = HEAD[gid]; HEAD[gid] = new_head; // xchange head pointer
-          if(new_head < NEXT.length){
-            NEXT[new_head] = old_head;
-            DATA[new_head] = particle;
-          } else {
-            // keep counting for reallocation size
-          }
+      insert(particles[i]);
+    }
+  }
+  
+  
+  public void solveCollision(DwCollisionObject object){
+    float pr = object.radCollision();
+    float px = object.x();
+    float py = object.y();
+    
+    px -= bounds[0];
+    py -= bounds[1];
+    
+    int xmin = (int)((px-pr)/CELL_SIZE);  xmin = Math.max(xmin, 0);
+    int xmax = (int)((px+pr)/CELL_SIZE);  xmax = Math.min(xmax, GRID_X-1);
+    int ymin = (int)((py-pr)/CELL_SIZE);  ymin = Math.max(ymin, 0);
+    int ymax = (int)((py+pr)/CELL_SIZE);  ymax = Math.min(ymax, GRID_Y-1);
+
+    for(int y = ymin; y <= ymax ; y++){
+      for(int x = xmin; x <= xmax ; x++){
+        int gid = y * GRID_X + x;
+        int head = HEAD[gid];
+        while(head > 0){
+          DwCollisionObject othr = DATA[head];
+          object.update(othr);  
+          head = NEXT[head];
         }
       }
     }
-    
   }
   
   
@@ -100,36 +179,7 @@ public class DwCollisionGrid{
     
     // solve collisions
     for(int i = 0; i < num_particles; i++){
-      DwCollisionObject particle = particles[i];
-
-      float pr = particle.radCollision();
-      float px = particle.x();
-      float py = particle.y();
-      
-//      float px = cache_xyr[i*3+0];
-//      float py = cache_xyr[i*3+1];
-//      float pr = cache_xyr[i*3+2];
-      
-      px -= bounds[0];
-      py -= bounds[1];
-      
-      int xmin = (int)((px-pr)/CELL_SIZE); // xmin = Math.max(xmin, 0);
-      int xmax = (int)((px+pr)/CELL_SIZE); // xmax = Math.min(xmax, GRID_X-1);
-      int ymin = (int)((py-pr)/CELL_SIZE); // ymin = Math.max(ymin, 0);
-      int ymax = (int)((py+pr)/CELL_SIZE); // ymax = Math.min(ymax, GRID_Y-1);
-
-      for(int y = ymin; y <= ymax ; y++){
-        for(int x = xmin; x <= xmax ; x++){
-          int gid = y * GRID_X + x;
-          int head = HEAD[gid];
-          while(head > 0){
-            DwCollisionObject othr = DATA[head];
-            particle.update(othr);  
-            head = NEXT[head];
-          }
-        }
-      }
-        
+      solveCollision(particles[i]);  
     }
   }
   
@@ -203,5 +253,11 @@ public class DwCollisionGrid{
     solveCollisions(particles, num_particles);
   }
 
+  
+  
+
+  
+
+  
   
 }

@@ -8,6 +8,7 @@
  */
 
 
+
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
 
@@ -220,5 +221,4 @@ import processing.opengl.PGraphics2D;
     }
     
   }
-  
   

@@ -8,7 +8,6 @@
  */
 
 
-
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.imageprocessing.filter.DwFilter;
 import com.thomasdiewald.pixelflow.java.imageprocessing.filter.Laplace;
@@ -20,6 +19,7 @@ import controlP5.Group;
 import controlP5.Slider;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
+
 
   //
   // A demo to quickly checkout the available imageprocessing filters/kernels 
@@ -155,7 +155,7 @@ import processing.opengl.PGraphics2D;
   int gui_w = 200;
   
   public void settings() {
-    img = loadImage("mc_escher.jpg");
+    img = loadImage("../data/mc_escher.jpg");
     
     view_w = img.width;
     view_h = img.height;

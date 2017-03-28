@@ -8,6 +8,7 @@
  */
 
 
+
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.imageprocessing.DwOpticalFlow;
 import com.thomasdiewald.pixelflow.java.imageprocessing.filter.DwFilter;
@@ -18,7 +19,6 @@ import controlP5.Group;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
 import processing.video.Capture;
-
 
 
   //Example, Optical Flow for Webcam capture + GUI, to find good parameters.

@@ -34,7 +34,7 @@ public class DwPixelFlow{
                                      
   static public class PixelFlowInfo{
     
-    static public final String version = "0.21";
+    static public final String version = "0.42";
     static public final String name    = "PixelFlow";
     static public final String author  = "Thomas Diewald";
     static public final String web     = "http://www.thomasdiewald.com";
@@ -80,7 +80,8 @@ public class DwPixelFlow{
 //    System.out.println("GL_MAX_PROGRAM_TEXEL_OFFSET "+rval[1]);
     
     pjogl.enableFBOLayer();
-    
+
+
     papplet.registerMethod("dispose", this);
     
     utils = new DwUtils(this);

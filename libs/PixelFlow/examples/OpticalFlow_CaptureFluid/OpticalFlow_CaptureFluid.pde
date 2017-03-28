@@ -10,6 +10,7 @@
 
 
 
+
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.dwgl.DwGLSLProgram;
 import com.thomasdiewald.pixelflow.java.fluid.DwFluid2D;
@@ -581,6 +582,7 @@ import processing.video.Capture;
       .addItem(group_display)
       .open(0, 1, 2);
   }
+  
   
   
   

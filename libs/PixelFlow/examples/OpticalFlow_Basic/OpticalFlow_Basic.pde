@@ -7,8 +7,6 @@
  * 
  */
 
-
-
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.imageprocessing.DwOpticalFlow;
 
@@ -103,7 +101,7 @@ import processing.opengl.PGraphics2D;
     pg_src.ellipse(mouseX, mouseY, 100, 100);
     pg_src.endDraw();
     
-    
+
     // update Optical Flow
     opticalflow.update(pg_src);
     

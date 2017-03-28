@@ -9,8 +9,6 @@
 
 
 
-
-
 import com.thomasdiewald.pixelflow.java.DwPixelFlow;
 import com.thomasdiewald.pixelflow.java.imageprocessing.DwOpticalFlow;
 import com.thomasdiewald.pixelflow.java.imageprocessing.filter.DwFilter;
@@ -18,6 +16,7 @@ import com.thomasdiewald.pixelflow.java.softbodydynamics.DwPhysics;
 import com.thomasdiewald.pixelflow.java.softbodydynamics.particle.DwParticle2D;
 
 import controlP5.Accordion;
+
 import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.RadioButton;
@@ -25,6 +24,7 @@ import controlP5.Toggle;
 import processing.core.*;
 import processing.opengl.PGraphics2D;
 import processing.video.Capture;
+
 
 
   //

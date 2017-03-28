@@ -252,6 +252,10 @@ public abstract class DwParticle implements DwCollisionObject{
   }
 
   
+  @Override
+  public int getCollisionCount(){
+    return collision_count;
+  }
   
   
   
@@ -276,6 +280,7 @@ public abstract class DwParticle implements DwCollisionObject{
       shp_particle.setFill(col_argb);
     }
   }
+  
   
   public void updateShape(){
     updateShapePosition();
