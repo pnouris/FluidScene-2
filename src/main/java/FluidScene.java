@@ -109,8 +109,12 @@ public class FluidScene extends PApplet {
 
         // update simulation
         if(UPDATE_FLUID){
+            pushMatrix();
+            pg_obstacles.translate(frameCount,0);
             fluid.addObstacles(pg_obstacles);
             fluid.update();
+            popMatrix();
+
         }
 
         // clear render target
@@ -132,6 +136,7 @@ public class FluidScene extends PApplet {
 
 
         // display
+        pg_obstacles.translate(frameCount,0);
         image(pg_fluid    , 0, 0);
         image(pg_obstacles, 0, 0);
 
