@@ -59,7 +59,7 @@ public class VaseShape {
     public void animation(){
 
         //Set the fluid position
-        PVector origPosition = new PVector(150,80,0);
+        PVector origPosition = new PVector(150,62,0);
 
         // Set rotation angles
         float angle = m.radians(movement);

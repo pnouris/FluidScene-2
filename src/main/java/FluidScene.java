@@ -37,7 +37,7 @@ public class FluidScene extends PApplet {
     PGraphics2D pg_obstacles;
 
     // some state variables for the GUI/display
-    int     BACKGROUND_COLOR           = 0;
+    int     BACKGROUND_COLOR           = 255;
     boolean UPDATE_FLUID               = true;
     boolean DISPLAY_FLUID_TEXTURES     = true;
     boolean DISPLAY_FLUID_VECTORS      = false;
@@ -85,13 +85,15 @@ public class FluidScene extends PApplet {
         pg_fluid.endDraw();
 
         pg_obstacles = (PGraphics2D) createGraphics(viewport_w, viewport_h, P2D);
-        pg_obstacles.smooth(0);
+        //pg_obstacles.smooth(0);
+            //pushMatrix();
         pg_obstacles.beginDraw();
         pg_obstacles.clear();
-        // circle-obstacles
-        pg_obstacles.stroke(255);
-        pg_obstacles.strokeWeight(4);
-        pg_obstacles.line(30, 20, width, height);
+        pg_obstacles.fill(255,0,0);
+        pg_obstacles.translate((width/2),(height/2));
+        pg_obstacles.rotate(radians(frameCount));
+        PShape bot =  pg_obstacles.loadShape("src\\main\\resources\\drawing.svg");
+        pg_obstacles.shape(bot, -80, -120, 250, 237);
         pg_obstacles.endDraw();
 
 
@@ -109,11 +111,17 @@ public class FluidScene extends PApplet {
 
         // update simulation
         if(UPDATE_FLUID){
-            pushMatrix();
-            pg_obstacles.translate(frameCount,0);
-            fluid.addObstacles(pg_obstacles);
+            pg_obstacles.beginDraw();
+            pg_obstacles.clear();
+            pg_obstacles.fill(255,0,0);
+            pg_obstacles.translate((width/2),(height/2));
+            pg_obstacles.rotate(radians(vase.movement));
+            PShape bot =  pg_obstacles.loadShape("src\\main\\resources\\drawing.svg");
+            pg_obstacles.shape(bot, -75, -70, 250, 137);
+            pg_obstacles.endDraw();
+
             fluid.update();
-            popMatrix();
+            fluid.addObstacles(pg_obstacles);
 
         }
 
@@ -138,7 +146,8 @@ public class FluidScene extends PApplet {
         // display
         pg_obstacles.translate(frameCount,0);
         image(pg_fluid    , 0, 0);
-        image(pg_obstacles, 0, 0);
+        //Hide obstacle
+        //image(pg_obstacles, 0, 0);
 
         obstacle_painter.displayBrush(this.g);
 
