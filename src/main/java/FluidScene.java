@@ -37,12 +37,18 @@ public class FluidScene extends PApplet {
     PGraphics2D pg_obstacles;
 
     // some state variables for the GUI/display
-    int     BACKGROUND_COLOR           = 255;
+    int     BACKGROUND_COLOR           = 0;
     boolean UPDATE_FLUID               = true;
     boolean DISPLAY_FLUID_TEXTURES     = true;
     boolean DISPLAY_FLUID_VECTORS      = false;
     int DISPLAY_fluid_texture_mode = 0;
     boolean moveVase = true;
+
+    //text PG
+    PFont font;
+    PGraphics2D pg_Texting;
+    int TextX = 100;
+    int TextY = 100;
 
     public static void main(String args[]) {
         PApplet.main("FluidScene");
@@ -84,9 +90,14 @@ public class FluidScene extends PApplet {
         pg_fluid.background(BACKGROUND_COLOR);
         pg_fluid.endDraw();
 
+
+        //pgraphics for TEXT
+        pg_Texting = (PGraphics2D) createGraphics(viewport_w,viewport_h,P2D);
+        font = createFont("Verdana",25);
+        ///////////////////////////////////////////////////////////////////////////
         pg_obstacles = (PGraphics2D) createGraphics(viewport_w, viewport_h, P2D);
         //pg_obstacles.smooth(0);
-            //pushMatrix();
+        //pushMatrix();
         pg_obstacles.beginDraw();
         pg_obstacles.clear();
         pg_obstacles.fill(255,0,0);
@@ -150,6 +161,20 @@ public class FluidScene extends PApplet {
         //image(pg_obstacles, 0, 0);
 
         obstacle_painter.displayBrush(this.g);
+
+        //Draw the Text display
+        pg_Texting.textFont(font);
+
+        pg_Texting.beginDraw();
+
+        pg_Texting.clear();
+        pg_Texting.text("Hello world blah blah blah!!",TextX,TextY);
+
+        pg_Texting.endDraw();
+
+        image(pg_Texting,0,0);
+        TextX = TextX + 1;
+        TextY = TextY + 1;
 
         // info
         String txt_fps = String.format(getClass().getName()+ "   [size %d/%d]   [frame %d]   [fps %6.2f]", fluid.fluid_w, fluid.fluid_h, fluid.simulation_step, frameRate);
