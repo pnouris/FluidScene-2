@@ -48,7 +48,7 @@ public class FluidScene extends PApplet {
     PFont font;
     PGraphics2D pg_Texting;
     int TextX = 100;
-    int TextY = 550;
+    int TextY = 560;
 
     public static void main(String args[]) {
         PApplet.main("FluidScene");
