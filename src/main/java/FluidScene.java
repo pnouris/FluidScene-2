@@ -48,7 +48,7 @@ public class FluidScene extends PApplet {
     PFont font;
     PGraphics2D pg_Texting;
     int TextX = 100;
-    int TextY = 100;
+    int TextY = 550;
 
     public static void main(String args[]) {
         PApplet.main("FluidScene");
@@ -168,13 +168,13 @@ public class FluidScene extends PApplet {
         pg_Texting.beginDraw();
 
         pg_Texting.clear();
-        pg_Texting.text("Hello world blah blah blah!!",TextX,TextY);
+        pg_Texting.text("Hello world blah blah blah!!",TextX, TextY);
 
         pg_Texting.endDraw();
 
         image(pg_Texting,0,0);
         TextX = TextX + 1;
-        TextY = TextY + 1;
+       // TextY = TextY + 1;
 
         // info
         String txt_fps = String.format(getClass().getName()+ "   [size %d/%d]   [frame %d]   [fps %6.2f]", fluid.fluid_w, fluid.fluid_h, fluid.simulation_step, frameRate);
