@@ -47,8 +47,13 @@ public class FluidScene extends PApplet {
     //text PG
     PFont font;
     PGraphics2D pg_Texting;
+    String[] headlines = {"abcd efg hijk!!!."};
+    int index = 0;
     int TextX = 100;
     int TextY = 560;
+    //int pos = 0;
+    //int [] textArray;
+
 
     public static void main(String args[]) {
         PApplet.main("FluidScene");
@@ -94,6 +99,7 @@ public class FluidScene extends PApplet {
         //pgraphics for TEXT
         pg_Texting = (PGraphics2D) createGraphics(viewport_w,viewport_h,P2D);
         font = createFont("Verdana",25);
+        TextX = width;  // initialize text offscreen
         ///////////////////////////////////////////////////////////////////////////
         pg_obstacles = (PGraphics2D) createGraphics(viewport_w, viewport_h, P2D);
         //pg_obstacles.smooth(0);
@@ -167,15 +173,28 @@ public class FluidScene extends PApplet {
 
         pg_Texting.beginDraw();
 
+        //displayText(textArray[pos],TextX++,TextY);
+
         pg_Texting.clear();
-        pg_Texting.text("Hello world blah blah blah!!",TextX, TextY);
+        pg_Texting.text(headlines[index],TextX, height - 20);
+        TextX = TextX - 3;
+
+        // If x is less than the negative width, then it is off the screen
+        // textWidth() is used to calculate the width of the current String.
+        float W = pg_Texting.textWidth(headlines[index]);
+        if (TextX < -W)
+        {
+            TextX = width;
+            // index is incremented when the current String has left the screen in order to display a new String.
+            index = (index + 1) % headlines.length;
+        }
 
         pg_Texting.endDraw();
 
         image(pg_Texting,0,0);
-        TextX = TextX + 1;
+        //TextX = TextX + 1;
        // TextY = TextY + 1;
-
+/////////////////////////////////////////////////////////////////////////////////
         // info
         String txt_fps = String.format(getClass().getName()+ "   [size %d/%d]   [frame %d]   [fps %6.2f]", fluid.fluid_w, fluid.fluid_h, fluid.simulation_step, frameRate);
         surface.setTitle(txt_fps);
@@ -307,5 +326,6 @@ public class FluidScene extends PApplet {
                 .addItem(group_display)
                 .open(4);
     }
+
 }
 
